@@ -1,0 +1,23 @@
+# Agradeço a Deus pelo dom do conhecimento
+# Use root/mongodb as user/password credentials
+version: '3.1'
+
+services:
+
+  db:
+    image: mongo
+    #restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongodb
+      MONGO_INITDB_ROOT_PASSWORD: mongodb
+
+  mongo-express:
+    image: mongo-express
+    #restart: always
+    ports:
+      - 8080:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: mongodb
+      ME_CONFIG_MONGODB_ADMINPASSWORD: mongodb

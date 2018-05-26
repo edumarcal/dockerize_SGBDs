@@ -1,0 +1,46 @@
+# Agradeço a Deus pelo dom do conhecimento
+#!/bin/sh --utf8
+
+case $1 in
+	'deploy')
+		case $2 in
+			'mysql')
+				docker swarm init --advertise-addr 192.168.0.28
+				docker stack deploy -c stacks/mysql.yml mysql
+				echo 'Adminer: http://127.0.0.1:8080'
+				;;
+			'postgres')
+				docker stack deploy -c stacks/postgres.yml postgres
+				echo 'Adminer: http://127.0.0.1:8080'
+				;;
+			'mongodb')
+				docker stack deploy -c stacks/mongodb.yml mongo
+				echo 'Mongo-Express: http://127.0.0.1:27017'
+				;;
+			*)
+				echo 'SGBD não catalogado, favor use: { mysql | postgres | mongo }'
+				;;
+		esac
+		;;
+	'undeploy')
+		#docker stack rm $(docker service ls  --format "{{.Name}}")
+		case $2 in
+			'mysql')
+				docker stack rm mysql
+				;;
+			'postgres')
+				docker stack rm postgres
+				;;
+			'mongodb')
+				docker stack rm mongo
+				;;
+			*)
+				echo 'SGBD não catalogado, favor use: { mysql | postgres | mongo }'
+			;;
+		esac
+		;;
+	*)
+		echo 'Ação não catalogada, favor use: { deploy | undeploy }.
+E.g.: deploy   => executar o docker; ou undeploy => finalizar a execução do docker'
+		;;
+esac
